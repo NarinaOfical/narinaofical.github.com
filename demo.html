@@ -184,7 +184,7 @@ if(input.type==='number'){
 el=document.createElement('input');
 el.type='range';
 el.min=input.min||0;
-el.max=input.max||100;
+el.max=input.max||1;
 el.step=input.step||0.01;
 el.value=input.defaultValue||0;
 el.oninput=()=>node[key]=parseFloat(el.value);

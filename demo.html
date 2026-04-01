@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Seriously.js Editor</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/seriously.js/0.4.4/seriously.min.js"></script>
+<script src="effects/kaleidoscope.js"></script>
+<script src="effects/tile.js"></script>
+<script src="effects/fliplayer.js"></script>
+<script src="effects/chromaticabberation.js"></script>
+<script src="effects/rays.js"></script>
+<script src="effects/lightrays.js"></script>
+<script src="effects/swirl.js"></script>
+<script src="effects/rgbsplit.js"></script>
+<script src="effects/seriously.huesat.js"></script>
+<script src="seriously.js"></script> 
+<script src="effects/wavewarp.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#000;color:#fff;font-family: Open Sans, sans-serif}
+#controls{position:fixed;top:0;left:0;width:300px;height:100%;overflow:auto;background:#222;padding:10px}
+canvas,video,img{max-width:100%}
+#viewer{margin-left:320px;padding:10px}
+input,select,button{width:100%;margin:5px 0}
+.effect{border:1px solid #444;padding:5px;margin:5px 0}
+</style>
+</head>
+<body>
+<div id="controls">
+<input type="file" id="upload" accept="image/*,video/*">
+<select id="effectSelect">
+<option value="kaleidoscope">kaleidoscope</option>
+<option value="tile">tile</option>
+<option value="fliplayer">fliplayer</option>
+<option value="chromaticabberation">chromaticabberation</option>
+<option value="rays">rays</option>
+<option value="lightrays">lightrays</option>
+<option value="swirl">swirl</option>
+<option value="rgbsplit">rgbsplit</option>
+<option value="huesat">huesat</option>
+<option value="wavewarp">wavewarp</option>
+</select>
+<button id="addEffect">Add Effect</button>
+<div id="effects"></div>
+<button id="exportImage">Export Image</button>
+<button id="exportVideo">Export WebM</button>
+</div>
+
+<div id="viewer">
+<video id="video" autoplay loop muted playsinline></video>
+<img id="image">
+<canvas id="canvas"></canvas>
+</div>
+
+<script>
+const seriously=new Seriously();
+let sourceNode=null;
+let target=seriously.target('#canvas');
+let chain=[];
+const upload=document.getElementById('upload');
+const video=document.getElementById('video');
+const image=document.getElementById('image');
+
+upload.onchange=e=>{
+const file=e.target.files[0];
+if(!file)return;
+const url=URL.createObjectURL(file);
+if(file.type.startsWith('video')){
+video.src=url;
+video.style.display='block';
+image.style.display='none';
+sourceNode=seriously.source(video);
+}else{
+image.src=url;
+image.onload=()=>{
+image.style.display='block';
+video.style.display='none';
+sourceNode=seriously.source(image);
+connectChain();
+};
+}
+};
+
+function connectChain(){
+let prev=sourceNode;
+chain.forEach(e=>{e.node.source=prev;prev=e.node});
+target.source=prev;
+seriously.go();
+}
+
+document.getElementById('addEffect').onclick=()=>{
+const type=document.getElementById('effectSelect').value;
+const node=seriously.effect(type);
+const wrapper=document.createElement('div');
+wrapper.className='effect';
+
+const removeBtn=document.createElement('button');
+removeBtn.textContent='Remove';
+removeBtn.onclick=()=>{
+chain=chain.filter(e=>e.node!==node);
+wrapper.remove();
+connectChain();
+};
+wrapper.appendChild(removeBtn);
+
+const inputs=Seriously.effects()[type].inputs;
+
+Object.keys(inputs).forEach(key=>{
+const input=inputs[key];
+let el;
+
+if(input.type==='number'){
+el=document.createElement('input');
+el.type='range';
+el.min=input.min||0;
+el.max=input.max||1;
+el.step=input.step||0.01;
+el.value=input.defaultValue||0;
+el.oninput=()=>node[key]=parseFloat(el.value);
+}
+
+if(input.type==='boolean'){
+el=document.createElement('input');
+el.type='checkbox';
+el.onchange=()=>node[key]=el.checked;
+}
+
+if(input.type==='enum'){
+el=document.createElement('select');
+input.options.forEach(opt=>{
+const o=document.createElement('option');
+o.value=opt;
+o.textContent=opt;
+el.appendChild(o);
+});
+el.onchange=()=>node[key]=el.value;
+}
+
+if(input.type==='color'){
+el=document.createElement('input');
+el.type='color';
+el.oninput=()=>node[key]=el.value;
+}
+
+if(el){
+const label=document.createElement('label');
+label.textContent=key;
+wrapper.appendChild(label);
+wrapper.appendChild(el);
+}
+});
+
+document.getElementById('effects').appendChild(wrapper);
+chain.push({node,type});
+connectChain();
+};
+
+document.getElementById('exportImage').onclick=()=>{
+const link=document.createElement('a');
+link.download='output.png';
+link.href=document.getElementById('canvas').toDataURL();
+link.click();
+};
+
+document.getElementById('exportVideo').onclick=()=>{
+const canvas=document.getElementById('canvas');
+const stream=canvas.captureStream(30);
+const recorder=new MediaRecorder(stream,{mimeType:'video/webm'});
+let chunks=[];
+recorder.ondataavailable=e=>chunks.push(e.data);
+recorder.onstop=()=>{
+const blob=new Blob(chunks,{type:'video/webm'});
+const url=URL.createObjectURL(blob);
+const a=document.createElement('a');
+a.href=url;
+a.download='output.webm';
+a.click();
+};
+recorder.start();
+setTimeout(()=>recorder.stop(),5000);
+};
+</script>
+</body>
+</html>

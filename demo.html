@@ -2,7 +2,26 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>Seriously.js Editor</title>
+<title>Seriously.js Full Editor</title>
+<style>
+body { margin:0; background:#111; color:#fff; font-family:sans-serif; }
+#ui { position:fixed; top:0; left:0; width:300px; bottom:0; overflow:auto; background:#222; padding:10px; }
+#canvas { position:absolute; left:300px; top:0; }
+button, input, select { width:100%; margin:4px 0; }
+.effect { border:1px solid #444; padding:5px; margin-bottom:6px; }
+</style>
+</head>
+<body>
+
+<div id="ui">
+<input type="file" id="upload" accept="image/*,video/*">
+<button id="addEffect">Add Effect</button>
+<button id="exportImg">Export Image</button>
+<button id="exportWebm">Export WebM</button>
+<div id="effects"></div>
+</div>
+
+<canvas id="canvas"></canvas>
 
 <script src="seriously.js"></script>
 
@@ -60,172 +79,147 @@
 <script src="effects/seriously.vignette.js"></script>
 <script src="effects/seriously.split.js"></script>
 
-<style>
-body { background:#111; color:#fff; font-family:sans-serif; }
-#controls { width:300px; float:left; }
-#canvas { border:1px solid #444; }
-input, select { width:100%; margin-bottom:5px; }
-button { width:100%; margin-top:5px; }
-.effect { border:1px solid #333; padding:5px; margin-bottom:10px; }
-</style>
-</head>
-
-<body>
-
-<div id="controls">
-<input type="file" id="upload" accept="image/*,video/*">
-<select id="effectSelect"></select>
-<button onclick="addEffect()">Add Effect</button>
-<div id="effects"></div>
-<button onclick="exportImage()">Export Image</button>
-<button onclick="exportVideo()">Export WebM</button>
-</div>
-
-<canvas id="canvas" width="800" height="450"></canvas>
-
 <script>
-var seriously = new Seriously();
-var target = seriously.target('#canvas');
-var source;
-var nodes = [];
+const seriously = new Seriously();
+const canvas = document.getElementById('canvas');
+const target = seriously.target(canvas);
 
-var effectsList = Object.keys(Seriously.effects());
-var select = document.getElementById('effectSelect');
-effectsList.forEach(e => {
-    var opt = document.createElement('option');
-    opt.value = e;
-    opt.textContent = e;
-    select.appendChild(opt);
-});
+let sourceNode = null;
+let chain = [];
 
-document.getElementById('upload').onchange = function(e) {
-    var file = e.target.files[0];
-    var url = URL.createObjectURL(file);
+function resize(w,h){
+ canvas.width = w;
+ canvas.height = h;
+}
 
-    if (file.type.startsWith('video')) {
-        var video = document.createElement('video');
-        video.src = url;
-        video.loop = true;
-        video.muted = true;
-        video.play();
-        source = seriously.source(video);
-    } else {
-        var img = new Image();
-        img.onload = function() {
-            source = seriously.source(img);
-        };
-        img.src = url;
-    }
+document.getElementById('upload').onchange = e=>{
+ const file = e.target.files[0];
+ const url = URL.createObjectURL(file);
+
+ if(file.type.startsWith('video')){
+   const video = document.createElement('video');
+   video.src = url;
+   video.autoplay = true;
+   video.loop = true;
+   video.muted = true;
+   video.onloadeddata = ()=>{
+     resize(video.videoWidth, video.videoHeight);
+     sourceNode = seriously.source(video);
+     rebuild();
+   };
+ } else {
+   const img = new Image();
+   img.src = url;
+   img.onload = ()=>{
+     resize(img.width, img.height);
+     sourceNode = seriously.source(img);
+     rebuild();
+   };
+ }
 };
 
-function rebuildChain() {
-    if (!source) return;
-
-    var current = source;
-
-    nodes.forEach(n => {
-        n.node.source = current;
-        current = n.node;
-    });
-
-    target.source = current;
-    seriously.go();
+function rebuild(){
+ let input = sourceNode;
+ chain.forEach(n=>{
+   n.node.source = input;
+   input = n.node;
+ });
+ target.source = input;
+ seriously.go();
 }
 
-function addEffect() {
-    var type = select.value;
-    var node = seriously.effect(type);
-    var container = document.createElement('div');
-    container.className = 'effect';
-
-    var title = document.createElement('div');
-    title.textContent = type;
-    container.appendChild(title);
-
-    var inputs = node.inputs;
-
-    Object.keys(inputs).forEach(key => {
-        var input = inputs[key];
-        if (input.type === 'image') return;
-
-        var el;
-
-        if (input.type === 'enum') {
-            el = document.createElement('select');
-            input.options.forEach(o => {
-                var op = document.createElement('option');
-                op.value = o;
-                op.textContent = o;
-                el.appendChild(op);
-            });
-        } else if (input.type === 'boolean') {
-            el = document.createElement('input');
-            el.type = 'checkbox';
-        } else if (input.type === 'color') {
-            el = document.createElement('input');
-            el.type = 'color';
-        } else {
-            el = document.createElement('input');
-            el.type = 'range';
-            el.min = input.min || 0;
-            el.max = input.max || 1;
-            el.step = input.step || 0.01;
-            el.value = input.defaultValue || 0;
-        }
-
-        el.oninput = function() {
-            if (input.type === 'boolean') {
-                node[key] = el.checked;
-            } else {
-                node[key] = el.value;
-            }
-        };
-
-        container.appendChild(el);
-    });
-
-    var removeBtn = document.createElement('button');
-    removeBtn.textContent = 'Remove';
-    removeBtn.onclick = function() {
-        nodes = nodes.filter(n => n.node !== node);
-        container.remove();
-        rebuildChain();
-    };
-
-    container.appendChild(removeBtn);
-    document.getElementById('effects').appendChild(container);
-
-    nodes.push({ node: node });
-    rebuildChain();
+function createControl(input, key, info, node){
+ let el;
+ if(info.type === 'number'){
+   el = document.createElement('input');
+   el.type='range';
+   el.min=info.min||0;
+   el.max=info.max||1;
+   el.step=info.step||0.01;
+   el.value=info.defaultValue||0;
+   el.oninput=()=>node[key]=parseFloat(el.value);
+ }
+ if(info.type === 'boolean'){
+   el = document.createElement('input');
+   el.type='checkbox';
+   el.onchange=()=>node[key]=el.checked;
+ }
+ if(info.type === 'color'){
+   el = document.createElement('input');
+   el.type='color';
+   el.oninput=()=>node[key]=el.value;
+ }
+ if(info.type === 'enum'){
+   el = document.createElement('select');
+   info.options.forEach(o=>{
+     let opt=document.createElement('option');
+     opt.value=o;
+     opt.textContent=o;
+     el.appendChild(opt);
+   });
+   el.onchange=()=>node[key]=el.value;
+ }
+ if(el){
+   input.appendChild(document.createTextNode(key));
+   input.appendChild(el);
+ }
 }
 
-function exportImage() {
-    var canvas = document.getElementById('canvas');
-    var link = document.createElement('a');
-    link.download = 'output.png';
-    link.href = canvas.toDataURL();
-    link.click();
-}
+document.getElementById('addEffect').onclick=()=>{
+ const list = Object.keys(Seriously.effects);
+ const name = list[Math.floor(Math.random()*list.length)];
+ const node = seriously.effect(name);
 
-function exportVideo() {
-    var canvas = document.getElementById('canvas');
-    var stream = canvas.captureStream(30);
-    var recorder = new MediaRecorder(stream, { mimeType: 'video/webm' });
-    var chunks = [];
+ const wrapper = document.createElement('div');
+ wrapper.className='effect';
 
-    recorder.ondataavailable = e => chunks.push(e.data);
-    recorder.onstop = () => {
-        var blob = new Blob(chunks, { type: 'video/webm' });
-        var url = URL.createObjectURL(blob);
-        var a = document.createElement('a');
-        a.href = url;
-        a.download = 'output.webm';
-        a.click();
-    };
+ const title = document.createElement('div');
+ title.textContent=name;
+ wrapper.appendChild(title);
 
-    recorder.start();
-    setTimeout(() => recorder.stop(), 5000);
-}
+ const remove = document.createElement('button');
+ remove.textContent='Remove';
+ remove.onclick=()=>{
+   chain = chain.filter(e=>e.node!==node);
+   wrapper.remove();
+   rebuild();
+ };
+ wrapper.appendChild(remove);
+
+ const inputs = node.inputs;
+ for(let k in inputs){
+   createControl(wrapper,k,inputs[k],node);
+ }
+
+ document.getElementById('effects').appendChild(wrapper);
+
+ chain.push({node,ui:wrapper});
+ rebuild();
+};
+
+document.getElementById('exportImg').onclick=()=>{
+ const link = document.createElement('a');
+ link.download='output.png';
+ link.href=canvas.toDataURL();
+ link.click();
+};
+
+document.getElementById('exportWebm').onclick=()=>{
+ const stream = canvas.captureStream(30);
+ const rec = new MediaRecorder(stream);
+ let chunks=[];
+ rec.ondataavailable=e=>chunks.push(e.data);
+ rec.onstop=()=>{
+   const blob=new Blob(chunks,{type:'video/webm'});
+   const url=URL.createObjectURL(blob);
+   const a=document.createElement('a');
+   a.href=url;
+   a.download='output.webm';
+   a.click();
+ };
+ rec.start();
+ setTimeout(()=>rec.stop(),5000);
+};
 </script>
 
 </body>

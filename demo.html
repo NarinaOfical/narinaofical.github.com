@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
+<meta charset="utf-8">
 <title>Seriously.js Editor</title>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/seriously.js/0.4.4/seriously.min.js"></script>
+
+<script src="seriously.js"></script>
+
 <script src="effects/kaleidoscope.js"></script>
 <script src="effects/tile.js"></script>
 <script src="effects/fliplayer.js"></script>
@@ -13,243 +15,218 @@
 <script src="effects/swirl.js"></script>
 <script src="effects/rgbsplit.js"></script>
 <script src="effects/seriously.huesat.js"></script>
-<script src="seriously.js"></script> 
 <script src="effects/wavewarp.js"></script>
-	<script type="text/javascript" src="effects/seriously.accumulator.js"></script>
-		<script type="text/javascript" src="effects/seriously.ascii.js"></script>
-		<script type="text/javascript" src="effects/seriously.bleach-bypass.js"></script>
-		<script type="text/javascript" src="effects/seriously.blend.js"></script>
-		<script type="text/javascript" src="effects/seriously.brightness-contrast.js"></script>
-		<script type="text/javascript" src="effects/seriously.checkerboard.js"></script>
-		<script type="text/javascript" src="effects/seriously.chroma.js"></script>
-		<script type="text/javascript" src="effects/seriously.color.js"></script>
-		<script type="text/javascript" src="effects/seriously.colorcomplements.js"></script>
-		<script type="text/javascript" src="effects/seriously.color-select.js"></script>
-		<script type="text/javascript" src="effects/seriously.temperature.js"></script>
-		<script type="text/javascript" src="effects/seriously.daltonize.js"></script>
-		<script type="text/javascript" src="effects/seriously.dither.js"></script>
-		<script type="text/javascript" src="effects/seriously.edge.js"></script>
-		<script type="text/javascript" src="effects/seriously.emboss.js"></script>
-		<script type="text/javascript" src="effects/seriously.exposure.js"></script>
-		<script type="text/javascript" src="effects/seriously.falsecolor.js"></script>
-		<script type="text/javascript" src="effects/seriously.freeze.js"></script>
-		<script type="text/javascript" src="effects/seriously.highlights-shadows.js"></script>
-		<script type="text/javascript" src="effects/seriously.kaleidoscope.js"></script>
-		<script type="text/javascript" src="effects/seriously.lumakey.js"></script>
-		<script type="text/javascript" src="effects/seriously.fader.js"></script>
-		<script type="text/javascript" src="effects/seriously.filmgrain.js"></script>
-		<script type="text/javascript" src="effects/seriously.blur.js"></script>
-		<script type="text/javascript" src="effects/seriously.hue-saturation.js"></script>
-		<script type="text/javascript" src="effects/seriously.hex.js"></script>
-		<script type="text/javascript" src="effects/seriously.invert.js"></script>
-		<script type="text/javascript" src="effects/seriously.directionblur.js"></script>
-		<script type="text/javascript" src="effects/seriously.nightvision.js"></script>
-		<script type="text/javascript" src="effects/seriously.noise.js"></script>
-		<script type="text/javascript" src="effects/seriously.opticalflow.js"></script>
-		<script type="text/javascript" src="effects/seriously.pixelate.js"></script>
-		<script type="text/javascript" src="effects/seriously.polar.js"></script>
-		<script type="text/javascript" src="effects/seriously.ripple.js"></script>
-		<script type="text/javascript" src="effects/seriously.scanlines.js"></script>
-		<script type="text/javascript" src="effects/seriously.sepia.js"></script>
-		<script type="text/javascript" src="effects/seriously.sketch.js"></script>
-		<script type="text/javascript" src="effects/seriously.throttle.js"></script>
-		<script type="text/javascript" src="effects/seriously.tone.js"></script>
-		<script type="text/javascript" src="effects/seriously.tvglitch.js"></script>
-		<script type="text/javascript" src="effects/seriously.vibrance.js"></script>
-		<script type="text/javascript" src="effects/seriously.vignette.js"></script>
-		<script type="text/javascript" src="effects/seriously.split.js"></script>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
+
+<script src="effects/seriously.ascii.js"></script>
+<script src="effects/seriously.bleach-bypass.js"></script>
+<script src="effects/seriously.blend.js"></script>
+<script src="effects/seriously.brightness-contrast.js"></script>
+<script src="effects/seriously.checkerboard.js"></script>
+<script src="effects/seriously.chroma.js"></script>
+<script src="effects/seriously.color.js"></script>
+<script src="effects/seriously.colorcomplements.js"></script>
+<script src="effects/seriously.color-select.js"></script>
+<script src="effects/seriously.temperature.js"></script>
+<script src="effects/seriously.daltonize.js"></script>
+<script src="effects/seriously.dither.js"></script>
+<script src="effects/seriously.edge.js"></script>
+<script src="effects/seriously.emboss.js"></script>
+<script src="effects/seriously.exposure.js"></script>
+<script src="effects/seriously.falsecolor.js"></script>
+<script src="effects/seriously.freeze.js"></script>
+<script src="effects/seriously.highlights-shadows.js"></script>
+<script src="effects/seriously.kaleidoscope.js"></script>
+<script src="effects/seriously.lumakey.js"></script>
+<script src="effects/seriously.fader.js"></script>
+<script src="effects/seriously.filmgrain.js"></script>
+<script src="effects/seriously.blur.js"></script>
+<script src="effects/seriously.hue-saturation.js"></script>
+<script src="effects/seriously.hex.js"></script>
+<script src="effects/seriously.invert.js"></script>
+<script src="effects/seriously.directionblur.js"></script>
+<script src="effects/seriously.nightvision.js"></script>
+<script src="effects/seriously.noise.js"></script>
+<script src="effects/seriously.opticalflow.js"></script>
+<script src="effects/seriously.pixelate.js"></script>
+<script src="effects/seriously.polar.js"></script>
+<script src="effects/seriously.ripple.js"></script>
+<script src="effects/seriously.scanlines.js"></script>
+<script src="effects/seriously.sepia.js"></script>
+<script src="effects/seriously.sketch.js"></script>
+<script src="effects/seriously.throttle.js"></script>
+<script src="effects/seriously.tone.js"></script>
+<script src="effects/seriously.tvglitch.js"></script>
+<script src="effects/seriously.vibrance.js"></script>
+<script src="effects/seriously.vignette.js"></script>
+<script src="effects/seriously.split.js"></script>
+
 <style>
-body{margin:0;background:#000;color:#fff;font-family: Open Sans, sans-serif}
-#controls{position:fixed;top:0;left:0;width:300px;height:100%;overflow:auto;background:#222;padding:10px}
-canvas,video,img{max-width:100%}
-#viewer{margin-left:50px;padding:10px}
-input,select,button{width:100%;margin:5px 0}
-.effect{border:1px solid #444;padding:5px;margin:5px 0}
+body { background:#111; color:#fff; font-family:sans-serif; }
+#controls { width:300px; float:left; }
+#canvas { border:1px solid #444; }
+input, select { width:100%; margin-bottom:5px; }
+button { width:100%; margin-top:5px; }
+.effect { border:1px solid #333; padding:5px; margin-bottom:10px; }
 </style>
 </head>
+
 <body>
+
 <div id="controls">
 <input type="file" id="upload" accept="image/*,video/*">
-<select id="effectSelect">
-<option value="kaleidoscope">Kaleidoscope</option>
-<option value="tile">Tile</option>
-<option value="fliplayer">Flip Layer</option>
-<option value="chromaticabberation">Chromatic Abberation</option>
-<option value="rays">Rays</option>
-<option value="lightrays">Light Rays</option>
-<option value="swirl">Swirl</option>
-<option value="rgbsplit">RGBA Shift</option>
-<option value="huesat">HSV Adjust</option>
-<option value="wavewarp">Wave Warp</option>
-  <option value="brightness-contrast">B/C Plugin</option>
-  <option value="temperature">Temperature</option>
-  <option value="colorcomplements">Color Comp</option>
-  <option value="falsecolor">False Color</option>
-  <option value="exposure">Exposure</option>
-  <option value="emboss">Emboss</option>
-  <option value="dither">Dither</option>
-  <option value="edge">Edge Detect</option>
-  <option value="hex">Hexahexa (Plugin)</option>
-  <option value="hue-saturation">H/S Plugin</option>
-  <option value="blur">Blur</option>
-  <option value="filmgrain">Film grain</option>
-  <option value="opticalflow">Optical Flow</option>
-  <option value="noise">Noise</option>
-  <option value="nightvision">NVG (Plugin)</option>
-  <option value="directionblur">DBlur</option>
-  <option value="invert">Negate (FFmpeg)</option>
-  <option value="scanlines">Scanlines</option>
-  <option value="pixelate">Pixelate</option>
-  <option value="ripple">Ripple</option>
-  <option value="polar">S_WarpPolar (Sapphire)</option>
-  <option value="throttle">Throttle</option>
-  <option value="sepia">Sepia</option>
-  <option value="tone">Tone</option>
-  <option value="tvglitch">Bad TV</option>
-  <option value="sketch">Sketch</option>
-</select>
-<button id="addEffect">Add Effect</button>
+<select id="effectSelect"></select>
+<button onclick="addEffect()">Add Effect</button>
 <div id="effects"></div>
-<button id="exportImage">Export Image</button>
-<button id="exportVideo">Export WebM</button>
+<button onclick="exportImage()">Export Image</button>
+<button onclick="exportVideo()">Export WebM</button>
 </div>
 
-<div id="viewer">
-<video id="video" autoplay loop muted playsinline></video>
-<img id="image">
-<canvas id="canvas"></canvas>
-</div>
+<canvas id="canvas" width="800" height="450"></canvas>
 
 <script>
-const seriously=new Seriously();
-let sourceNode=null;
-let target=seriously.target('#canvas');
-let chain=[];
-const upload=document.getElementById('upload');
-const video=document.getElementById('video');
-const image=document.getElementById('image');
+var seriously = new Seriously();
+var target = seriously.target('#canvas');
+var source;
+var nodes = [];
 
-upload.onchange=e=>{
-const file=e.target.files[0];
-if(!file)return;
-const url=URL.createObjectURL(file);
-if(file.type.startsWith('video')){
-video.src=url;
-video.style.display='block';
-image.style.display='none';
-sourceNode=seriously.source(video);
-}else{
-image.src=url;
-image.onload=()=>{
-image.style.display='block';
-video.style.display='none';
-sourceNode=seriously.source(image);
-connectChain();
-};
-}
-};
-
-function connectChain(){
-let prev=sourceNode;
-chain.forEach(e=>{e.node.source=prev;prev=e.node});
-target.source=prev;
-seriously.go();
-}
-
-document.getElementById('addEffect').onclick=()=>{
-const type=document.getElementById('effectSelect').value;
-const node=seriously.effect(type);
-const wrapper=document.createElement('div');
-wrapper.className='effect';
-
-const removeBtn=document.createElement('button');
-removeBtn.textContent='Remove';
-removeBtn.onclick=()=>{
-chain=chain.filter(e=>e.node!==node);
-wrapper.remove();
-connectChain();
-};
-wrapper.appendChild(removeBtn);
-
-const inputs=Seriously.effects()[type].inputs;
-
-Object.keys(inputs).forEach(key=>{
-const input=inputs[key];
-let el;
-
-if(input.type==='number'){
-el=document.createElement('input');
-el.type='range';
-el.min=input.min||0;
-el.max=input.max||1;
-el.step=input.step||0.01;
-el.value=input.defaultValue||0;
-el.oninput=()=>node[key]=parseFloat(el.value);
-}
-
-if(input.type==='boolean'){
-el=document.createElement('input');
-el.type='checkbox';
-el.onchange=()=>node[key]=el.checked;
-}
-
-if(input.type==='enum'){
-el=document.createElement('select');
-input.options.forEach(opt=>{
-const o=document.createElement('option');
-o.value=opt;
-o.textContent=opt;
-el.appendChild(o);
-});
-el.onchange=()=>node[key]=el.value;
-}
-
-if(input.type==='color'){
-el=document.createElement('input');
-el.type='color';
-el.oninput=()=>node[key]=el.value;
-}
-
-if(el){
-const label=document.createElement('label');
-label.textContent=key;
-wrapper.appendChild(label);
-wrapper.appendChild(el);
-}
+var effectsList = Object.keys(Seriously.effects());
+var select = document.getElementById('effectSelect');
+effectsList.forEach(e => {
+    var opt = document.createElement('option');
+    opt.value = e;
+    opt.textContent = e;
+    select.appendChild(opt);
 });
 
-document.getElementById('effects').appendChild(wrapper);
-chain.push({node,type});
-connectChain();
+document.getElementById('upload').onchange = function(e) {
+    var file = e.target.files[0];
+    var url = URL.createObjectURL(file);
+
+    if (file.type.startsWith('video')) {
+        var video = document.createElement('video');
+        video.src = url;
+        video.loop = true;
+        video.muted = true;
+        video.play();
+        source = seriously.source(video);
+    } else {
+        var img = new Image();
+        img.onload = function() {
+            source = seriously.source(img);
+        };
+        img.src = url;
+    }
 };
 
-document.getElementById('exportImage').onclick=()=>{
-const link=document.createElement('a');
-link.download='output.png';
-link.href=document.getElementById('canvas').toDataURL();
-link.click();
-};
+function rebuildChain() {
+    if (!source) return;
 
-document.getElementById('exportVideo').onclick=()=>{
-const canvas=document.getElementById('canvas');
-const stream=canvas.captureStream(30);
-const recorder=new MediaRecorder(stream,{mimeType:'video/webm'});
-let chunks=[];
-recorder.ondataavailable=e=>chunks.push(e.data);
-recorder.onstop=()=>{
-const blob=new Blob(chunks,{type:'video/webm'});
-const url=URL.createObjectURL(blob);
-const a=document.createElement('a');
-a.href=url;
-a.download='output.webm';
-a.click();
-};
-recorder.start();
-setTimeout(()=>recorder.stop(),5000);
-};
+    var current = source;
+
+    nodes.forEach(n => {
+        n.node.source = current;
+        current = n.node;
+    });
+
+    target.source = current;
+    seriously.go();
+}
+
+function addEffect() {
+    var type = select.value;
+    var node = seriously.effect(type);
+    var container = document.createElement('div');
+    container.className = 'effect';
+
+    var title = document.createElement('div');
+    title.textContent = type;
+    container.appendChild(title);
+
+    var inputs = node.inputs;
+
+    Object.keys(inputs).forEach(key => {
+        var input = inputs[key];
+        if (input.type === 'image') return;
+
+        var el;
+
+        if (input.type === 'enum') {
+            el = document.createElement('select');
+            input.options.forEach(o => {
+                var op = document.createElement('option');
+                op.value = o;
+                op.textContent = o;
+                el.appendChild(op);
+            });
+        } else if (input.type === 'boolean') {
+            el = document.createElement('input');
+            el.type = 'checkbox';
+        } else if (input.type === 'color') {
+            el = document.createElement('input');
+            el.type = 'color';
+        } else {
+            el = document.createElement('input');
+            el.type = 'range';
+            el.min = input.min || 0;
+            el.max = input.max || 1;
+            el.step = input.step || 0.01;
+            el.value = input.defaultValue || 0;
+        }
+
+        el.oninput = function() {
+            if (input.type === 'boolean') {
+                node[key] = el.checked;
+            } else {
+                node[key] = el.value;
+            }
+        };
+
+        container.appendChild(el);
+    });
+
+    var removeBtn = document.createElement('button');
+    removeBtn.textContent = 'Remove';
+    removeBtn.onclick = function() {
+        nodes = nodes.filter(n => n.node !== node);
+        container.remove();
+        rebuildChain();
+    };
+
+    container.appendChild(removeBtn);
+    document.getElementById('effects').appendChild(container);
+
+    nodes.push({ node: node });
+    rebuildChain();
+}
+
+function exportImage() {
+    var canvas = document.getElementById('canvas');
+    var link = document.createElement('a');
+    link.download = 'output.png';
+    link.href = canvas.toDataURL();
+    link.click();
+}
+
+function exportVideo() {
+    var canvas = document.getElementById('canvas');
+    var stream = canvas.captureStream(30);
+    var recorder = new MediaRecorder(stream, { mimeType: 'video/webm' });
+    var chunks = [];
+
+    recorder.ondataavailable = e => chunks.push(e.data);
+    recorder.onstop = () => {
+        var blob = new Blob(chunks, { type: 'video/webm' });
+        var url = URL.createObjectURL(blob);
+        var a = document.createElement('a');
+        a.href = url;
+        a.download = 'output.webm';
+        a.click();
+    };
+
+    recorder.start();
+    setTimeout(() => recorder.stop(), 5000);
+}
 </script>
+
 </body>
 </html>

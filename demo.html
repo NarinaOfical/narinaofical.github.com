@@ -15,6 +15,49 @@
 <script src="effects/seriously.huesat.js"></script>
 <script src="seriously.js"></script> 
 <script src="effects/wavewarp.js"></script>
+	<script type="text/javascript" src="effects/seriously.accumulator.js"></script>
+		<script type="text/javascript" src="effects/seriously.ascii.js"></script>
+		<script type="text/javascript" src="effects/seriously.bleach-bypass.js"></script>
+		<script type="text/javascript" src="effects/seriously.blend.js"></script>
+		<script type="text/javascript" src="effects/seriously.brightness-contrast.js"></script>
+		<script type="text/javascript" src="effects/seriously.checkerboard.js"></script>
+		<script type="text/javascript" src="effects/seriously.chroma.js"></script>
+		<script type="text/javascript" src="effects/seriously.color.js"></script>
+		<script type="text/javascript" src="effects/seriously.colorcomplements.js"></script>
+		<script type="text/javascript" src="effects/seriously.color-select.js"></script>
+		<script type="text/javascript" src="effects/seriously.temperature.js"></script>
+		<script type="text/javascript" src="effects/seriously.daltonize.js"></script>
+		<script type="text/javascript" src="effects/seriously.dither.js"></script>
+		<script type="text/javascript" src="effects/seriously.edge.js"></script>
+		<script type="text/javascript" src="effects/seriously.emboss.js"></script>
+		<script type="text/javascript" src="effects/seriously.exposure.js"></script>
+		<script type="text/javascript" src="effects/seriously.falsecolor.js"></script>
+		<script type="text/javascript" src="effects/seriously.freeze.js"></script>
+		<script type="text/javascript" src="effects/seriously.highlights-shadows.js"></script>
+		<script type="text/javascript" src="effects/seriously.kaleidoscope.js"></script>
+		<script type="text/javascript" src="effects/seriously.lumakey.js"></script>
+		<script type="text/javascript" src="effects/seriously.fader.js"></script>
+		<script type="text/javascript" src="effects/seriously.filmgrain.js"></script>
+		<script type="text/javascript" src="effects/seriously.blur.js"></script>
+		<script type="text/javascript" src="effects/seriously.hue-saturation.js"></script>
+		<script type="text/javascript" src="effects/seriously.hex.js"></script>
+		<script type="text/javascript" src="effects/seriously.invert.js"></script>
+		<script type="text/javascript" src="effects/seriously.directionblur.js"></script>
+		<script type="text/javascript" src="effects/seriously.nightvision.js"></script>
+		<script type="text/javascript" src="effects/seriously.noise.js"></script>
+		<script type="text/javascript" src="effects/seriously.opticalflow.js"></script>
+		<script type="text/javascript" src="effects/seriously.pixelate.js"></script>
+		<script type="text/javascript" src="effects/seriously.polar.js"></script>
+		<script type="text/javascript" src="effects/seriously.ripple.js"></script>
+		<script type="text/javascript" src="effects/seriously.scanlines.js"></script>
+		<script type="text/javascript" src="effects/seriously.sepia.js"></script>
+		<script type="text/javascript" src="effects/seriously.sketch.js"></script>
+		<script type="text/javascript" src="effects/seriously.throttle.js"></script>
+		<script type="text/javascript" src="effects/seriously.tone.js"></script>
+		<script type="text/javascript" src="effects/seriously.tvglitch.js"></script>
+		<script type="text/javascript" src="effects/seriously.vibrance.js"></script>
+		<script type="text/javascript" src="effects/seriously.vignette.js"></script>
+		<script type="text/javascript" src="effects/seriously.split.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
@@ -31,16 +74,42 @@ input,select,button{width:100%;margin:5px 0}
 <div id="controls">
 <input type="file" id="upload" accept="image/*,video/*">
 <select id="effectSelect">
-<option value="kaleidoscope">kaleidoscope</option>
-<option value="tile">tile</option>
-<option value="fliplayer">fliplayer</option>
-<option value="chromaticabberation">chromaticabberation</option>
-<option value="rays">rays</option>
-<option value="lightrays">lightrays</option>
-<option value="swirl">swirl</option>
-<option value="rgbsplit">rgbsplit</option>
-<option value="huesat">huesat</option>
-<option value="wavewarp">wavewarp</option>
+<option value="kaleidoscope">Kaleidoscope</option>
+<option value="tile">Tile</option>
+<option value="fliplayer">Flip Layer</option>
+<option value="chromaticabberation">Chromatic Abberation</option>
+<option value="rays">Rays</option>
+<option value="lightrays">Light Rays</option>
+<option value="swirl">Swirl</option>
+<option value="rgbsplit">RGBA Shift</option>
+<option value="huesat">HSV Adjust</option>
+<option value="wavewarp">Wave Warp</option>
+  <option value="brightness-contrast">B/C Plugin</option>
+  <option value="temperature">Temperature</option>
+  <option value="colorcomplements">Color Comp</option>
+  <option value="falsecolor">False Color</option>
+  <option value="exposure">Exposure</option>
+  <option value="emboss">Emboss</option>
+  <option value="dither">Dither</option>
+  <option value="edge">Edge Detect</option>
+  <option value="hex">Hexahexa (Plugin)</option>
+  <option value="hue-saturation">H/S Plugin</option>
+  <option value="blur">Blur</option>
+  <option value="filmgrain">Film grain</option>
+  <option value="opticalflow">Optical Flow</option>
+  <option value="noise">Noise</option>
+  <option value="nightvision">NVG (Plugin)</option>
+  <option value="directionblur">DBlur</option>
+  <option value="invert">Negate (FFmpeg)</option>
+  <option value="scanlines">Scanlines</option>
+  <option value="pixelate">Pixelate</option>
+  <option value="ripple">Ripple</option>
+  <option value="polar">S_WarpPolar (Sapphire)</option>
+  <option value="throttle">Throttle</option>
+  <option value="sepia">Sepia</option>
+  <option value="tone">Tone</option>
+  <option value="tvglitch">Bad TV</option>
+  <option value="sketch">Sketch</option>
 </select>
 <button id="addEffect">Add Effect</button>
 <div id="effects"></div>
@@ -115,7 +184,7 @@ if(input.type==='number'){
 el=document.createElement('input');
 el.type='range';
 el.min=input.min||0;
-el.max=input.max||1;
+el.max=input.max||100;
 el.step=input.step||0.01;
 el.value=input.defaultValue||0;
 el.oninput=()=>node[key]=parseFloat(el.value);
